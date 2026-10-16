@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AtelierLive - Voice-Controlled SVG Tailoring Visualizer</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-glow: rgba(79, 70, 229, 0.4);
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+        header { padding: 1.25rem 2rem; background: var(--card-bg); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        h1 { font-size: 1.25rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+        
+        .main-container { display: grid; grid-template-columns: 400px 1fr; flex: 1; max-width: 1400px; margin: 0 auto; width: 100%; gap: 1.5rem; padding: 1.5rem; }
+        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } }
+        
+        .panel { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+        .control-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        label { font-size: 0.875rem; font-weight: 500; color: var(--text-muted); }
+        select, input { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 0.75rem; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
+        select:focus, input:focus { border-color: var(--primary); }
+        
+        /* Voice Assistant Widget */
+        .voice-box { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+        .voice-btn { background: var(--primary); color: white; border: none; padding: 0.75rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: background 0.2s, box-shadow 0.2s; }
+        .voice-btn.listening { background: var(--danger); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+        
+        .transcript-box { font-size: 0.85rem; color: var(--text-muted); font-style: italic; min-height: 40px; background: var(--bg); padding: 0.5rem 0.75rem; border-radius: 6px; border: 1px dashed var(--border); }
+
+        .preview-area { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; min-height: 500px; padding: 2rem; }
+        svg { width: 100%; height: 100%; max-height: 550px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); }
+        
+        .specs-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--text-muted); }
+        .spec-val { color: var(--text); font-weight: 600; }
+        .badge { background: rgba(79, 70, 229, 0.2); color: #818cf8; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🧵 AtelierLive <span class="badge">Real-Time Voice SVG Engine</span></h1>
+        <div id="liveStatus" style="font-size: 0.85rem; color: var(--success);">● Standby for Voice</div>
+    </header>
+
+    <div class="main-container">
+        <!-- Control Panel & Voice Integration -->
+        <div class="panel">
+            <h3>Voice & Manual Controls</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Speak to design or adjust dropdowns manually.</p>
+            
+            <!-- Live Voice Recognition Module -->
+            <div class="voice-box">
+                <label>Live Speech Control</label>
+                <button id="voiceBtn" class="voice-btn" onclick="toggleVoiceRecognition()">
+                    🎤 Start Live Voice Command
+                </button>
+                <div class="transcript-box" id="transcript">Say commands like: "Make it a V-neck", "Add puff sleeves", "Make it red", or "Princess cut"...</div>
+            </div>
+
+            <div class="control-group">
+                <label>Neckline Style</label>
+                <select id="neckline" onchange="updateGarment()">
+                    <option value="round">Classic Round</option>
+                    <option value="v-neck">Deep V-Neck</option>
+                    <option value="sweetheart">Sweetheart</option>
+                    <option value="boat">Boat Neck</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>Sleeve Length & Style</label>
+                <select id="sleeves" onchange="updateGarment()">
+                    <option value="sleeveless">Sleeveless</option>
+                    <option value="short">Short Cap Sleeve</option>
+                    <option value="elbow" selected>Elbow Length</option>
+                    <option value="puff">Elbow Puff Sleeve</option>
+                    <option value="full">Full Long Sleeve</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>Fit / Dart Line</label>
+                <select id="darts" onchange="updateGarment()">
+                    <option value="straight">Straight Boxy Fit</option>
+                    <option value="fitted" selected>Waist Darts / Fitted</option>
+                    <option value="princess">Princess Cut Panel</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>Fabric Tone</label>
+                <input type="color" id="fabricColor" value="#3b82f6" onchange="updateGarment()" style="height: 40px; cursor: pointer; padding: 4px;">
+            </div>
+
+            <div class="specs-bar">
+                <div>Client ID: <br><span class="spec-val">#CR-8402</span></div>
+                <div>Yardage: <br><span class="spec-val" id="yardage">1.75 mtrs</span></div>
+                <div>Stitch Est: <br><span class="spec-val">4.5 hrs</span></div>
+            </div>
+        </div>
+
+        <!-- Real-Time SVG Canvas Preview -->
+        <div class="preview-area">
+            <svg id="garmentSvg" viewBox="0 0 500 600" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+                        <feDropShadow dx="0" dy="8" stdDeviation="6" flood-opacity="0.25"/>
+                    </filter>
+                </defs>
+
+                <!-- Base Garment Body Fill -->
+                <path id="bodyPath" d="M180 80 Q250 60 320 80 L370 160 L330 180 L320 320 L335 520 L165 520 L180 320 L170 180 L130 160 Z" fill="#3b82f6" filter="url(#shadow)" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
+
+                <!-- Left Sleeve -->
+                <path id="leftSleeve" d="M130 160 L70 240 L100 270 L170 180 Z" fill="#2563eb" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
+                
+                <!-- Right Sleeve -->
+                <path id="rightSleeve" d="M370 160 L430 240 L400 270 L330 180 Z" fill="#2563eb" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
+
+                <!-- Neckline Cutout Overlay -->
+                <path id="necklinePath" d="M180 80 Q250 140 320 80 Z" fill="#0f172a" stroke="#1e293b" stroke-width="2"/>
+
+                <!-- Internal Construction / Stitch Lines -->
+                <g id="constructionLines" stroke="#93c5fd" stroke-width="1.5" stroke-dasharray="5,5" fill="none">
+                    <path d="M250 110 L250 520" />
+                    <path id="dartLeft" d="M220 320 L235 210" />
+                    <path id="dartRight" d="M280 320 L265 210" />
+                </g>
+
+                <!-- Seam Allowance Guides -->
+                <g stroke="#ffffff" stroke-width="1" stroke-opacity="0.3" fill="none" stroke-dasharray="2,2">
+                    <path d="M168 518 L332 518" />
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        // Web Speech API Integration for Live Voice Command Parsing
+        let recognition = null;
+        let isListening = false;
+
+        function toggleVoiceRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                alert("Speech recognition is not supported in this browser. Try Chrome or Edge.");
+                return;
+            }
+
+            const btn = document.getElementById('voiceBtn');
+            const status = document.getElementById('liveStatus');
+
+            if (!isListening) {
+                recognition = new SpeechRecognition();
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'en-US';
+
+                recognition.onstart = () => {
+                    isListening = true;
+                    btn.classList.add('listening');
+                    btn.innerHTML = "🔴 Listening... (Click to Stop)";
+                    status.innerText = "● Voice Active";
+                    status.style.color = "#ef4444";
+                };
+
+                recognition.onresult = (event) => {
+                    let interimTranscript = '';
+                    let finalTranscript = '';
+
+                    for (let i = event.resultIndex; i < event.results.length; ++i) {
+                        if (event.results[i].isFinal) {
+                            finalTranscript += event.results[i][0].transcript;
+                        } else {
+                            interimTranscript += event.results[i][0].transcript;
+                        }
+                    }
+
+                    const spokenText = (finalTranscript || interimTranscript).toLowerCase();
+                    document.getElementById('transcript').innerText = `"${spokenText}"`;
+
+                    // Parse Intent from Spoken Text in Real-Time
+                    parseVoiceIntent(spokenText);
+                };
+
+                recognition.onerror = (event) => {
+                    console.error("Speech recognition error", event.error);
+                };
+
+                recognition.onend = () => {
+                    if (isListening) {
+                        recognition.start(); // Keep continuous loop active
+                    }
+                };
+
+                recognition.start();
+            } else {
+                isListening = false;
+                recognition.stop();
+                btn.classList.remove('listening');
+                btn.innerHTML = "🎤 Start Live Voice Command";
+                status.innerText = "● Standby for Voice";
+                status.style.color = "#10b981";
+                document.getElementById('transcript').innerText = "Voice session ended.";
+            }
+        }
+
+        // Keyword Intent Mapping Engine
+        function parseVoiceIntent(text) {
+            // Necklines
+            if (text.includes('v neck') || text.includes('v-neck')) {
+                document.getElementById('neckline').value = 'v-neck';
+            } else if (text.includes('sweetheart')) {
+                document.getElementById('neckline').value = 'sweetheart';
+            } else if (text.includes('boat')) {
+                document.getElementById('neckline').value = 'boat';
+            } else if (text.includes('round') || text.includes('classic')) {
+                document.getElementById('neckline').value = 'round';
+            }
+
+            // Sleeves
+            if (text.includes('sleeveless') || text.includes('no sleeves')) {
+                document.getElementById('sleeves').value = 'sleeveless';
+            } else if (text.includes('puff') || text.includes('puffed')) {
+                document.getElementById('sleeves').value = 'puff';
+            } else if (text.includes('short sleeve') || text.includes('cap sleeve')) {
+                document.getElementById('sleeves').value = 'short';
+            } else if (text.includes('full sleeve') || text.includes('long sleeve')) {
+                document.getElementById('sleeves').value = 'full';
+            } else if (text.includes('elbow')) {
+                document.getElementById('sleeves').value = 'elbow';
+            }
+
+            // Fits / Darts
+            if (text.includes('princess')) {
+                document.getElementById('darts').value = 'princess';
+            } else if (text.includes('straight') || text.includes('boxy')) {
+                document.getElementById('darts').value = 'straight';
+            } else if (text.includes('fitted') || text.includes('dart')) {
+                document.getElementById('darts').value = 'fitted';
+            }
+
+            // Colors
+            if (text.includes('red') || text.includes('maroon')) {
+                document.getElementById('fabricColor').value = '#ef4444';
+            } else if (text.includes('blue') || text.includes('navy')) {
+                document.getElementById('fabricColor').value = '#3b82f6';
+            } else if (text.includes('green') || text.includes('emerald')) {
+                document.getElementById('fabricColor').value = '#10b981';
+            } else if (text.includes('yellow') || text.includes('gold')) {
+                document.getElementById('fabricColor').value = '#f59e0b';
+            } else if (text.includes('pink') || text.includes('rose')) {
+                document.getElementById('fabricColor').value = '#ec4899';
+            } else if (text.includes('purple') || text.includes('violet')) {
+                document.getElementById('fabricColor').value = '#8b5cf6';
+            }
+
+            // Re-render SVG
+            updateGarment();
+        }
+
+        // SVG Geometry Mutation Function
+        function updateGarment() {
+            const neckline = document.getElementById('neckline').value;
+            const sleeves = document.getElementById('sleeves').value;
+            const darts = document.getElementById('darts').value;
+            const color = document.getElementById('fabricColor').value;
+
+            // Update body color
+            document.getElementById('bodyPath').setAttribute('fill', color);
+            document.getElementById('leftSleeve').setAttribute('fill', adjustColor(color, -15));
+            document.getElementById('rightSleeve').setAttribute('fill', adjustColor(color, -15));
+
+            // Update Neckline Path
+            const neckPath = document.getElementById('necklinePath');
+            if (neckline === 'round') {
+                neckPath.setAttribute('d', 'M180 80 Q250 130 320 80 Z');
+            } else if (neckline === 'v-neck') {
+                neckPath.setAttribute('d', 'M180 80 L250 200 L320 80 Z');
+            } else if (neckline === 'sweetheart') {
+                neckPath.setAttribute('d', 'M180 80 Q215 120 250 150 Q285 120 320 80 Z');
+            } else if (neckline === 'boat') {
+                neckPath.setAttribute('d', 'M160 80 Q250 100 340 80 Z');
+            }
+
+            // Update Sleeves
+            const leftSleeve = document.getElementById('leftSleeve');
+            const rightSleeve = document.getElementById('rightSleeve');
+            if (sleeves === 'sleeveless') {
+                leftSleeve.setAttribute('d', '');
+                rightSleeve.setAttribute('d', '');
+            } else if (sleeves === 'short') {
+                leftSleeve.setAttribute('d', 'M130 160 L80 200 L105 225 L170 180 Z');
+                rightSleeve.setAttribute('d', 'M370 160 L420 200 L395 225 L330 180 Z');
+            } else if (sleeves === 'elbow') {
+                leftSleeve.setAttribute('d', 'M130 160 L70 270 L105 300 L170 180 Z');
+                rightSleeve.setAttribute('d', 'M370 160 L430 270 L395 300 L330 180 Z');
+            } else if (sleeves === 'puff') {
+                leftSleeve.setAttribute('d', 'M130 160 C50 180 50 280 105 300 L130 280 L170 180 Z');
+                rightSleeve.setAttribute('d', 'M370 160 C450 180 450 280 395 300 L370 280 L330 180 Z');
+            } else if (sleeves === 'full') {
+                leftSleeve.setAttribute('d', 'M130 160 L60 420 L95 435 L170 180 Z');
+                rightSleeve.setAttribute('d', 'M370 160 L440 420 L405 435 L330 180 Z');
+            }
+
+            // Update Darts / Stitch lines
+            const dLeft = document.getElementById('dartLeft');
+            const dRight = document.getElementById('dartRight');
+            if (darts === 'straight') {
+                dLeft.setAttribute('d', '');
+                dRight.setAttribute('d', '');
+            } else if (darts === 'fitted') {
+                dLeft.setAttribute('d', 'M215 340 Q230 250 235 210');
+                dRight.setAttribute('d', 'M285 340 Q270 250 265 210');
+            } else if (darts === 'princess') {
+                dLeft.setAttribute('d', 'M210 520 Q215 300 240 160');
+                dRight.setAttribute('d', 'M290 520 Q285 300 260 160');
+            }
+        }
+
+        function adjustColor(color, amount) {
+            let usePound = false;
+            if (color[0] == "#") { color = color.slice(1); usePound = true; }
+            let num = parseInt(color, 16);
+            let r = (num >> 16) + amount;
+            if (r > 255) r = 255; else if (r < 0) r = 0;
+            let b = ((num >> 8) & 0x00ff) + amount;
+            if (b > 255) b = 255; else if (b < 0) b = 0;
+            let g = (num & 0x0000ff) + amount;
+            if (g > 255) g = 255; else if (g < 0) g = 0;
+            return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16).padStart(6, '0');
+        }
+    </script>
+</body>
+</html>
