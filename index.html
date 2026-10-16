@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AtelierFlow - Custom Boutique Tailoring Suite</title>
-    <!-- Tailwind CSS for modern responsive boutique styling -->
+    <!-- Tailwind CSS for utility-focused boutique UI -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -12,16 +12,15 @@
                 extend: {
                     colors: {
                         atelier: {
-                            bg: '#121824',
-                            card: '#1e2533',
-                            cardHover: '#262f42',
-                            gold: '#d4af37',
-                            goldLight: '#f3e5ab',
-                            accent: '#4f46e5',
-                            text: '#f1f5f9',
-                            muted: '#94a3b8',
+                            bg: '#0f172a',
+                            card: '#1e293b',
+                            cardHover: '#334155',
+                            gold: '#38bdf8',
+                            goldLight: '#f8fafc',
                             border: '#334155',
-                            paper: '#fcfbf7'
+                            text: '#f8fafc',
+                            muted: '#94a3b8',
+                            paper: '#ffffff'
                         }
                     }
                 }
@@ -29,110 +28,95 @@
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+        body { 
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background-color: #0f172a; 
+            color: #f8fafc; 
+            font-size: 13px;
+        }
         
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #121824; color: #f1f5f9; }
-        .font-serif { font-family: 'Playfair Display', serif; }
-        
-        /* Custom Ledger Table Styling */
         .ledger-input {
-            background: transparent;
-            border-bottom: 1px dotted #475569;
-            color: #f1f5f9;
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #f8fafc;
             text-align: right;
-            padding: 2px 4px;
+            padding: 3px 6px;
+            border-radius: 4px;
             outline: none;
-            font-size: 0.9rem;
-            width: 80px;
+            font-size: 12px;
+            width: 75px;
+            font-family: monospace;
         }
         .ledger-input:focus {
-            border-bottom: 1px solid #d4af37;
-            background: rgba(212, 175, 55, 0.05);
+            border-color: #38bdf8;
+            background: #1e293b;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #121824; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #d4af37; }
-
-        @keyframes scanline {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
-        .scanning-line {
-            animation: scanline 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
+        /* Compact Scrollbar */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
 
         @media print {
-            body { background: white !important; color: black !important; }
+            body { background: white !important; color: black !important; font-size: 11px !important; }
             .no-print { display: none !important; }
-            .print-only { display: block !important; }
-            .atelier-card { background: white !important; border: 1px solid #ccc !important; box-shadow: none !important; color: black !important; }
+            .atelier-card { background: white !important; border: 1px solid #cbd5e1 !important; box-shadow: none !important; color: black !important; }
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- Top Header Navigation -->
-    <header class="bg-atelier-card border-b border-atelier-border px-6 py-4 flex flex-wrap items-center justify-between gap-4 no-print shadow-md">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 font-bold text-xl font-serif shadow-inner">
+    <header class="bg-atelier-card border-b border-atelier-border px-4 py-2.5 flex items-center justify-between gap-4 no-print shadow-sm">
+        <div class="flex items-center gap-2.5">
+            <div class="w-7 h-7 rounded bg-sky-600 flex items-center justify-center text-white font-mono font-bold text-xs">
                 AF
             </div>
             <div>
-                <h1 class="font-serif text-xl font-bold tracking-wide text-atelier-goldLight">AtelierFlow™</h1>
-                <p class="text-xs text-atelier-muted">Digital Order Ledger & Parametric Stitching Suite</p>
+                <h1 class="text-sm font-semibold tracking-tight text-white">AtelierFlow™ <span class="text-xs text-sky-400 font-normal">Utility Edition</span></h1>
             </div>
         </div>
 
-        <div class="flex items-center gap-3 flex-wrap">
-            <div id="liveStatus" class="px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700.text-xs text-emerald-400 flex items-center gap-2 shadow-inner text-xs">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Standby for Voice
+        <div class="flex items-center gap-2">
+            <div id="liveStatus" class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-[11px] text-emerald-400 flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Voice Ready
             </div>
-            <!-- AI Image Vision Button -->
-            <button onclick="document.getElementById('dressImageInput').click()" class="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-sm font-semibold flex items-center gap-2 shadow-lg transition-all transform active:scale-95">
-                📸 Upload Photo & Analyze
-            </button>
-            <input type="file" id="dressImageInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
 
-            <button onclick="toggleVoiceRecognition()" id="voiceBtn" class="px-4 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-xl text-sm font-semibold flex items-center gap-2 shadow-lg transition-all transform active:scale-95">
-                🎤 Voice Stitched
+            <button onclick="toggleVoiceRecognition()" id="voiceBtn" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded text-xs font-medium flex items-center gap-1.5 transition-all">
+                🎤 Voice
             </button>
-            <button onclick="openTechPackModal()" class="px-4 py-2 bg-atelier-gold hover:bg-amber-500 text-slate-950 rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg transition-all">
+            <button onclick="openTechPackModal()" class="px-3 py-1 bg-sky-600 hover:bg-sky-500 text-white rounded text-xs font-semibold flex items-center gap-1.5">
                 📋 Tech Pack
             </button>
         </div>
     </header>
 
-    <!-- Main Workspace Grid -->
-    <main class="flex-1 max-w-[1600px] w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <main class="flex-1 max-w-[1700px] w-full mx-auto p-3 grid grid-cols-1 lg:grid-cols-12 gap-3">
 
-        <!-- Column 1: Order Meta & Measurement Ledger (Width: 4 Cols) -->
-        <section class="lg:col-span-4 flex flex-col gap-6">
+        <!-- Column 1: Order Meta & Measurement Spec Ledger (Width: 4 Cols) -->
+        <section class="lg:col-span-4 flex flex-col gap-3">
             
             <!-- Customer & Order Ledger Card -->
-            <div class="atelier-card bg-atelier-card border border-atelier-border rounded-2xl p-5 shadow-xl flex flex-col gap-4">
-                <div class="flex justify-between items-center border-b border-atelier-border pb-3">
-                    <h2 class="font-serif text-lg font-semibold text-atelier-gold">Fairy Moon Order Ledger</h2>
-                    <span class="text-xs font-mono px-2 py-1 rounded bg-slate-800 text-amber-300 border border-slate-700" id="orderIdDisplay">#ORD-2026-84</span>
+            <div class="atelier-card bg-atelier-card border border-atelier-border rounded-lg p-3 shadow flex flex-col gap-2.5">
+                <div class="flex justify-between items-center border-b border-atelier-border pb-2">
+                    <span class="text-xs font-semibold text-sky-400 uppercase tracking-wider">Order Ledger</span>
+                    <span class="text-[11px] font-mono px-1.5 py-0.5 rounded bg-slate-900 text-sky-300 border border-slate-700" id="orderIdDisplay">#ORD-2026-84</span>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3 text-sm">
+                <div class="grid grid-cols-2 gap-2 text-xs">
                     <div>
-                        <label class="text-xs text-atelier-muted block mb-1">Customer Name</label>
-                        <input type="text" id="custName" value="Amina Al-Hassan" class="w-full bg-slate-900 border border-atelier-border rounded-lg px-3 py-2 text-atelier-text text-sm focus:border-atelier-gold outline-none">
+                        <label class="text-[11px] text-atelier-muted block mb-0.5">Customer Name</label>
+                        <input type="text" id="custName" value="Amina Al-Hassan" class="w-full bg-slate-900 border border-atelier-border rounded px-2 py-1 text-white text-xs focus:border-sky-400 outline-none">
                     </div>
                     <div>
-                        <label class="text-xs text-atelier-muted block mb-1">Mobile No.</label>
-                        <input type="text" id="custPhone" value="+91 98472 19280" class="w-full bg-slate-900 border border-atelier-border rounded-lg px-3 py-2 text-atelier-text text-sm focus:border-atelier-gold outline-none">
+                        <label class="text-[11px] text-atelier-muted block mb-0.5">Mobile No.</label>
+                        <input type="text" id="custPhone" value="+91 98472 19280" class="w-full bg-slate-900 border border-atelier-border rounded px-2 py-1 text-white text-xs focus:border-sky-400 outline-none">
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3 text-sm">
+                <div class="grid grid-cols-2 gap-2 text-xs">
                     <div>
-                        <label class="text-xs text-atelier-muted block mb-1">Item Category</label>
-                        <select id="itemCategory" onchange="updateGarment()" class="w-full bg-slate-900 border border-atelier-border rounded-lg px-3 py-2 text-atelier-text text-sm focus:border-atelier-gold outline-none">
+                        <label class="text-[11px] text-atelier-muted block mb-0.5">Item Category</label>
+                        <select id="itemCategory" onchange="updateGarment()" class="w-full bg-slate-900 border border-atelier-border rounded px-2 py-1 text-white text-xs focus:border-sky-400 outline-none">
                             <option value="gown">Gown / Lehenga</option>
                             <option value="blouse">Saree Blouse</option>
                             <option value="kurti">Kurti / Tunics</option>
@@ -140,58 +124,58 @@
                         </select>
                     </div>
                     <div>
-                        <label class="text-xs text-atelier-muted block mb-1">Due Date</label>
-                        <input type="date" id="dueDate" value="2026-04-18" class="w-full bg-slate-900 border border-atelier-border rounded-lg px-3 py-2 text-atelier-text text-sm focus:border-atelier-gold outline-none">
+                        <label class="text-[11px] text-atelier-muted block mb-0.5">Due Date</label>
+                        <input type="date" id="dueDate" value="2026-04-18" class="w-full bg-slate-900 border border-atelier-border rounded px-2 py-1 text-white text-xs focus:border-sky-400 outline-none">
                     </div>
                 </div>
 
-                <!-- Live Voice & AI Parser Status Pill -->
-                <div class="bg-slate-900/80 border border-atelier-border rounded-xl p-3 flex flex-col gap-1">
+                <!-- Voice Status Pill -->
+                <div class="bg-slate-900/90 border border-atelier-border rounded p-2 flex flex-col gap-0.5">
                     <div class="flex justify-between items-center">
-                        <span class="text-[10px] uppercase font-semibold text-atelier-gold tracking-wider">AI & Voice Stream Parser</span>
-                        <span id="aiConfidence" class="text-[10px] text-emerald-400 font-mono">Vision Ready</span>
+                        <span class="text-[10px] uppercase font-mono text-sky-400">Voice Command Log</span>
+                        <span id="aiConfidence" class="text-[10px] text-emerald-400 font-mono">Idle</span>
                     </div>
-                    <p id="transcript" class="text-xs text-atelier-muted italic">"Upload a photo or speak commands..."</p>
+                    <p id="transcript" class="text-[11px] text-atelier-muted italic">"Say specs like waist 28..."</p>
                 </div>
             </div>
 
             <!-- Measurement Spec Sheet Ledger -->
-            <div class="atelier-card bg-atelier-card border border-atelier-border rounded-2xl p-5 shadow-xl flex flex-col gap-4">
-                <div class="flex justify-between items-center border-b border-atelier-border pb-3">
-                    <h2 class="font-serif text-base font-semibold text-atelier-gold">Body Metrics & Spec Table</h2>
-                    <span class="text-xs text-atelier-muted">All units in Inches</span>
+            <div class="atelier-card bg-atelier-card border border-atelier-border rounded-lg p-3 shadow flex flex-col gap-2.5">
+                <div class="flex justify-between items-center border-b border-atelier-border pb-2">
+                    <span class="text-xs font-semibold text-sky-400 uppercase tracking-wider">Body Metrics (Inches)</span>
+                    <span class="text-[10px] text-atelier-muted font-mono">Up/Down Arrows active</span>
                 </div>
 
-                <div class="space-y-2.5 max-h-[320px] overflow-y-auto pr-1">
-                    <div class="flex justify-between items-center text-sm py-1 border-b border-slate-800">
+                <div class="space-y-1.5 max-h-[300px] overflow-y-auto pr-1">
+                    <div class="flex justify-between items-center text-xs py-1 border-b border-slate-800/60">
                         <span class="text-atelier-muted">Bust / Chest</span>
                         <input type="text" id="mBust" value="33.5" class="ledger-input">
                     </div>
-                    <div class="flex justify-between items-center text-sm py-1 border-b border-slate-800">
+                    <div class="flex justify-between items-center text-xs py-1 border-b border-slate-800/60">
                         <span class="text-atelier-muted">Waist</span>
                         <input type="text" id="mWaist" value="27.5" class="ledger-input">
                     </div>
-                    <div class="flex justify-between items-center text-sm py-1 border-b border-slate-800">
+                    <div class="flex justify-between items-center text-xs py-1 border-b border-slate-800/60">
                         <span class="text-atelier-muted">Shoulder Width</span>
                         <input type="text" id="mShoulder" value="14.5" class="ledger-input">
                     </div>
-                    <div class="flex justify-between items-center text-sm py-1 border-b border-slate-800">
+                    <div class="flex justify-between items-center text-xs py-1 border-b border-slate-800/60">
                         <span class="text-atelier-muted">Armhole Depth</span>
                         <input type="text" id="mArmhole" value="15.2" class="ledger-input">
                     </div>
-                    <div class="flex justify-between items-center text-sm py-1 border-b border-slate-800">
+                    <div class="flex justify-between items-center text-xs py-1 border-b border-slate-800/60">
                         <span class="text-atelier-muted">Sleeve Length</span>
                         <input type="text" id="mSleeve" value="22.5" class="ledger-input">
                     </div>
-                    <div class="flex justify-between items-center text-sm py-1 border-b border-slate-800">
+                    <div class="flex justify-between items-center text-xs py-1 border-b border-slate-800/60">
                         <span class="text-atelier-muted">Neck Front Drop</span>
                         <input type="text" id="mNeck" value="6.5" class="ledger-input">
                     </div>
-                    <div class="flex justify-between items-center text-sm py-1 border-b border-slate-800">
+                    <div class="flex justify-between items-center text-xs py-1 border-b border-slate-800/60">
                         <span class="text-atelier-muted">Full Length</span>
                         <input type="text" id="mLength" value="56.0" class="ledger-input">
                     </div>
-                    <div class="flex justify-between items-center text-sm py-1 border-b border-slate-800">
+                    <div class="flex justify-between items-center text-xs py-1 border-b border-slate-800/60">
                         <span class="text-atelier-muted">Skirt Waist</span>
                         <input type="text" id="mSkirt" value="28.0" class="ledger-input">
                     </div>
@@ -201,117 +185,95 @@
         </section>
 
         <!-- Column 2: Interactive SVG Garment Canvas & Style Controls (Width: 5 Cols) -->
-        <section class="lg:col-span-5 flex flex-col gap-6">
+        <section class="lg:col-span-5 flex flex-col gap-3">
             
             <!-- Live SVG Visualizer Container -->
-            <div id="visualizerCard" class="atelier-card bg-atelier-card border border-atelier-border rounded-2xl p-5 shadow-xl flex flex-col items-center justify-center relative min-h-[500px] overflow-hidden">
+            <div id="visualizerCard" class="atelier-card bg-atelier-card border border-atelier-border rounded-lg p-3 shadow flex flex-col items-center justify-center relative min-h-[460px] overflow-hidden">
                 
-                <!-- AI Scanning Overlay Banner (Hidden by default) -->
-                <div id="scanningOverlay" class="absolute inset-0 bg-slate-950/80 backdrop-blur-md z-30 hidden flex-col items-center justify-center gap-4">
-                    <div class="relative w-48 h-64 rounded-xl overflow-hidden border border-atelier-gold shadow-2xl bg-slate-900">
-                        <img id="uploadPreviewThumb" src="" class="w-full h-full object-cover opacity-80" alt="Uploaded dress">
-                        <div class="absolute inset-x-0 h-1 bg-atelier-gold shadow-[0_0_15px_#d4af37] scanning-line"></div>
-                    </div>
-                    <div class="text-center">
-                        <p class="font-serif text-lg font-bold text-atelier-gold animate-pulse">Running AI Vision Extraction...</p>
-                        <p class="text-xs text-atelier-muted mt-1">Detecting neckline curves, sleeve cut, silhouette, & fabric weave</p>
-                    </div>
+                <div class="absolute top-3 left-3 z-10 flex flex-col gap-0.5">
+                    <span class="text-[10px] uppercase font-mono tracking-wider text-sky-400 font-semibold">Live Garment Blueprint</span>
+                    <span id="activeStyleBadge" class="text-[11px] bg-slate-900 px-2 py-0.5 rounded border border-atelier-border text-atelier-muted">Chantilly Corset Gown</span>
                 </div>
 
-                <div class="absolute top-4 left-4 z-10 flex flex-col gap-1">
-                    <span class="text-xs uppercase tracking-wider font-bold text-atelier-gold">Live Garment Blueprint</span>
-                    <span id="activeStyleBadge" class="text-xs bg-slate-900 px-2.5 py-1 rounded-md border border-atelier-border text-atelier-muted">Chantilly Corset Gown</span>
-                </div>
-
-                <div class="absolute top-4 right-4 z-10 flex items-center gap-2">
-                    <button onclick="zoomSvg(1.1)" class="w-8 h-8 rounded-lg bg-slate-900 border border-atelier-border text-atelier-text hover:bg-slate-800 flex items-center justify-center font-bold">+</button>
-                    <button onclick="zoomSvg(0.9)" class="w-8 h-8 rounded-lg bg-slate-900 border border-atelier-border text-atelier-text hover:bg-slate-800 flex items-center justify-center font-bold">-</button>
-                    <button onclick="resetSvgZoom()" class="px-2 py-1 rounded-lg bg-slate-900 border border-atelier-border text-xs text-atelier-muted hover:bg-slate-800">Reset</button>
+                <div class="absolute top-3 right-3 z-10 flex items-center gap-1.5">
+                    <button onclick="zoomSvg(1.1)" class="w-6 h-6 rounded bg-slate-900 border border-atelier-border text-white hover:bg-slate-800 flex items-center justify-center font-bold text-xs">+</button>
+                    <button onclick="zoomSvg(0.9)" class="w-6 h-6 rounded bg-slate-900 border border-atelier-border text-white hover:bg-slate-800 flex items-center justify-center font-bold text-xs">-</button>
+                    <button onclick="resetSvgZoom()" class="px-2 py-0.5 rounded bg-slate-900 border border-atelier-border text-[10px] text-atelier-muted hover:bg-slate-800">Reset</button>
                 </div>
 
                 <!-- SVG Canvas -->
-                <div id="svgContainer" class="w-full h-full flex items-center justify-center transition-transform duration-200 cursor-grab active:cursor-grabbing">
-                    <svg id="garmentSvg" viewBox="0 0 500 620" xmlns="http://www.w3.org/2000/svg" class="max-h-[520px] drop-shadow-2xl">
+                <div id="svgContainer" class="w-full h-full flex items-center justify-center transition-transform duration-150">
+                    <svg id="garmentSvg" viewBox="0 0 500 620" xmlns="http://www.w3.org/2000/svg" class="max-h-[440px]">
                         <defs>
-                            <!-- Fabric Texture Patterns -->
                             <pattern id="forestGreenBrocade" width="30" height="30" patternUnits="userSpaceOnUse">
                                 <rect width="30" height="30" fill="#1b4332"/>
-                                <path d="M15 0 Q20 15 30 15 Q15 20 15 30 Q10 15 0 15 Q15 10 15 0" fill="#d4af37" fill-opacity="0.35"/>
-                                <circle cx="15" cy="15" r="3" fill="#f3e5ab" fill-opacity="0.4"/>
+                                <path d="M15 0 Q20 15 30 15 Q15 20 15 30 Q10 15 0 15 Q15 10 15 0" fill="#38bdf8" fill-opacity="0.3"/>
+                                <circle cx="15" cy="15" r="2.5" fill="#f8fafc" fill-opacity="0.3"/>
                             </pattern>
-
                             <pattern id="creamGoldBrocade" width="30" height="30" patternUnits="userSpaceOnUse">
-                                <rect width="30" height="30" fill="#fdfbf7"/>
-                                <path d="M15 0 Q20 15 30 15 Q15 20 15 30 Q10 15 0 15 Q15 10 15 0" fill="#c5a059" fill-opacity="0.4"/>
-                                <circle cx="15" cy="15" r="3" fill="#8c6d36" fill-opacity="0.4"/>
+                                <rect width="30" height="30" fill="#334155"/>
+                                <path d="M15 0 Q20 15 30 15 Q15 20 15 30 Q10 15 0 15 Q15 10 15 0" fill="#38bdf8" fill-opacity="0.3"/>
                             </pattern>
-
                             <pattern id="raniPinkSilk" width="20" height="20" patternUnits="userSpaceOnUse">
-                                <rect width="20" height="20" fill="#db2777"/>
+                                <rect width="20" height="20" fill="#831843"/>
                                 <path d="M0 10 L20 10 M10 0 L10 20" stroke="#f472b6" stroke-width="0.5" stroke-opacity="0.3"/>
                             </pattern>
-
                             <pattern id="royalBlueSilk" width="20" height="20" patternUnits="userSpaceOnUse">
                                 <rect width="20" height="20" fill="#1e3a8a"/>
                                 <path d="M0 10 L20 10 M10 0 L10 20" stroke="#60a5fa" stroke-width="0.5" stroke-opacity="0.3"/>
                             </pattern>
-
-                            <filter id="garmentShadow" x="-10%" y="-10%" width="120%" height="120%">
-                                <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#000000" flood-opacity="0.4"/>
-                            </filter>
                         </defs>
 
-                        <!-- Mannequin Silhouettes (Back & Front) -->
-                        <g opacity="0.15" stroke="#ffffff" stroke-width="1" fill="none" stroke-dasharray="3,3">
+                        <!-- Mannequin Guides -->
+                        <g opacity="0.12" stroke="#ffffff" stroke-width="1" fill="none" stroke-dasharray="2,2">
                             <path d="M140 100 Q170 80 200 100 L220 170 L205 320 L215 580 L165 580 L175 320 L160 170 Z" />
                             <path d="M300 100 Q330 80 360 100 L380 170 L365 320 L375 580 L325 580 L335 320 L320 170 Z" />
                         </g>
 
-                        <!-- Main Garment Torso & Skirt Layer -->
-                        <g filter="url(#garmentShadow)">
-                            <path id="skirtPath" d="M190 320 L310 320 L360 590 L140 590 Z" fill="url(#forestGreenBrocade)" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
-                            <path id="bodicePath" d="M190 100 Q250 85 310 100 L335 170 L310 320 L190 320 L165 170 Z" fill="url(#forestGreenBrocade)" stroke="#334155" stroke-width="2.5" stroke-linejoin="round"/>
+                        <!-- Garment Path Layer -->
+                        <g>
+                            <path id="skirtPath" d="M190 320 L310 320 L360 590 L140 590 Z" fill="url(#forestGreenBrocade)" stroke="#475569" stroke-width="1.5" stroke-linejoin="round"/>
+                            <path id="bodicePath" d="M190 100 Q250 85 310 100 L335 170 L310 320 L190 320 L165 170 Z" fill="url(#forestGreenBrocade)" stroke="#475569" stroke-width="1.5" stroke-linejoin="round"/>
                         </g>
 
-                        <!-- Sleeves Layer -->
+                        <!-- Sleeves -->
                         <g id="sleevesGroup">
-                            <path id="leftSleeve" d="M165 170 L115 250 L135 275 L190 195 Z" fill="url(#forestGreenBrocade)" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
-                            <path id="rightSleeve" d="M335 170 L385 250 L365 275 L310 195 Z" fill="url(#forestGreenBrocade)" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
+                            <path id="leftSleeve" d="M165 170 L115 250 L135 275 L190 195 Z" fill="url(#forestGreenBrocade)" stroke="#475569" stroke-width="1.5" stroke-linejoin="round"/>
+                            <path id="rightSleeve" d="M335 170 L385 250 L365 275 L310 195 Z" fill="url(#forestGreenBrocade)" stroke="#475569" stroke-width="1.5" stroke-linejoin="round"/>
                         </g>
 
-                        <!-- Neckline Cutout & Design Overlay -->
-                        <path id="necklinePath" d="M190 100 Q250 155 310 100 Z" fill="#121824" stroke="#334155" stroke-width="2"/>
+                        <!-- Neckline -->
+                        <path id="necklinePath" d="M190 100 Q250 155 310 100 Z" fill="#0f172a" stroke="#475569" stroke-width="1.5"/>
 
-                        <!-- Internal Corset Boning & Seam Darts -->
-                        <g id="constructionLines" stroke="#d4af37" stroke-width="1.2" stroke-dasharray="4,4" fill="none" opacity="0.8">
-                            <path d="M250 120 L250 320" />
-                            <path d="M220 320 L235 170" />
-                            <path d="M280 320 L265 170" />
-                            <path d="M205 210 Q250 230 295 210" />
+                        <!-- Structural Bones -->
+                        <g id="constructionLines" stroke="#38bdf8" stroke-width="1" stroke-dasharray="3,3" fill="none" opacity="0.7">
+                            <path id="boneCenter" d="M250 120 L250 320" />
+                            <path id="boneLeft" d="M220 320 L235 170" />
+                            <path id="boneRight" d="M280 320 L265 170" />
                         </g>
 
-                        <!-- Length & Measurement Dimension Markers -->
-                        <g stroke="#94a3b8" stroke-width="1" opacity="0.7">
-                            <line x1="120" y1="100" x2="120" y2="590" />
+                        <!-- Dimension Markers -->
+                        <g stroke="#94a3b8" stroke-width="1" opacity="0.8">
+                            <line id="dimLine" x1="120" y1="100" x2="120" y2="590" />
                             <line x1="115" y1="100" x2="125" y2="100" />
-                            <line x1="115" y1="590" x2="125" y2="590" />
-                            <text x="80" y="350" fill="#94a3b8" font-size="12" font-family="monospace">56.0"</text>
+                            <line id="dimBottomTick" x1="115" y1="590" x2="125" y2="590" />
+                            <text id="dimLengthText" x="70" y="350" fill="#38bdf8" font-size="11" font-family="monospace" font-weight="bold">56.0"</text>
                         </g>
                     </svg>
                 </div>
 
-                <div class="w-full flex justify-between items-center text-xs text-atelier-muted pt-3 border-t border-atelier-border mt-auto">
-                    <span>Stitch Time: <strong class="text-atelier-text">6.5 hrs</strong></span>
-                    <span>Fabric Required: <strong class="text-atelier-text">3.2 Meters</strong></span>
-                    <span>Pattern ID: <strong class="text-atelier-text">CM-GOWN-09</strong></span>
+                <div class="w-full flex justify-between items-center text-[11px] text-atelier-muted pt-2 border-t border-atelier-border mt-auto font-mono">
+                    <span>Stitch Time: <strong id="calcStitchTime" class="text-white">6.5h</strong></span>
+                    <span>Fabric: <strong id="calcFabricReq" class="text-white">3.2m</strong></span>
+                    <span>ID: <strong class="text-white">CM-09</strong></span>
                 </div>
             </div>
 
-            <!-- Manual Style Customization Controls -->
-            <div class="atelier-card bg-atelier-card border border-atelier-border rounded-2xl p-5 shadow-xl grid grid-cols-2 gap-4">
+            <!-- Manual Controls -->
+            <div class="atelier-card bg-atelier-card border border-atelier-border rounded-lg p-3 shadow grid grid-cols-2 gap-3 text-xs">
                 <div>
-                    <label class="text-xs text-atelier-muted block mb-1">Neckline Style</label>
-                    <select id="neckline" onchange="updateGarment()" class="w-full bg-slate-900 border border-atelier-border rounded-lg px-3 py-2 text-atelier-text text-sm focus:border-atelier-gold outline-none">
+                    <label class="text-[11px] text-atelier-muted block mb-0.5">Neckline Style</label>
+                    <select id="neckline" onchange="updateGarment()" class="w-full bg-slate-900 border border-atelier-border rounded px-2 py-1 text-white text-xs focus:border-sky-400 outline-none">
                         <option value="sweetheart">Sweetheart Corset</option>
                         <option value="v-neck">Deep V-Neck</option>
                         <option value="boat">Boat Neck</option>
@@ -320,8 +282,8 @@
                 </div>
 
                 <div>
-                    <label class="text-xs text-atelier-muted block mb-1">Sleeve Variation</label>
-                    <select id="sleeves" onchange="updateGarment()" class="w-full bg-slate-900 border border-atelier-border rounded-lg px-3 py-2 text-atelier-text text-sm focus:border-atelier-gold outline-none">
+                    <label class="text-[11px] text-atelier-muted block mb-0.5">Sleeve Variation</label>
+                    <select id="sleeves" onchange="updateGarment()" class="w-full bg-slate-900 border border-atelier-border rounded px-2 py-1 text-white text-xs focus:border-sky-400 outline-none">
                         <option value="elbow">Elbow Length Fitted</option>
                         <option value="puff">Elbow Puff Sleeve</option>
                         <option value="full">Full Long Sleeve</option>
@@ -332,91 +294,66 @@
 
         </section>
 
-        <!-- Column 3: Fabric & Neelam Thread Swatch Selector (Width: 3 Cols) -->
-        <section class="lg:col-span-3 flex flex-col gap-6">
+        <!-- Column 3: Fabric & Thread Swatch Selector (Width: 3 Cols) -->
+        <section class="lg:col-span-3 flex flex-col gap-3">
             
             <!-- Fabric Swatch Card -->
-            <div class="atelier-card bg-atelier-card border border-atelier-border rounded-2xl p-5 shadow-xl flex flex-col gap-4">
-                <div class="border-b border-atelier-border pb-3">
-                    <h2 class="font-serif text-base font-semibold text-atelier-gold">Fabric Texture Swatches</h2>
-                    <p class="text-xs text-atelier-muted">Click to apply textile pattern</p>
+            <div class="atelier-card bg-atelier-card border border-atelier-border rounded-lg p-3 shadow flex flex-col gap-2.5">
+                <div class="border-b border-atelier-border pb-2">
+                    <span class="text-xs font-semibold text-sky-400 uppercase tracking-wider">Fabric Swatches</span>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <button onclick="setFabric('forestGreenBrocade', 'Forest Green Brocade', 'url(#forestGreenBrocade)')" class="group flex flex-col items-center gap-2 p-2 rounded-xl bg-slate-900 border border-atelier-border hover:border-atelier-gold transition-all">
-                        <div class="w-full h-16 rounded-lg shadow-inner flex items-center justify-center border border-emerald-900" style="background: #1b4332;">
-                            <span class="text-xs text-amber-300 font-serif">#16</span>
-                        </div>
-                        <span class="text-xs font-medium text-atelier-text text-center">Forest Brocade</span>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="setFabric('forestGreenBrocade', 'Forest Green Brocade', 'url(#forestGreenBrocade)')" class="flex flex-col items-center gap-1.5 p-1.5 rounded bg-slate-900 border border-atelier-border hover:border-sky-400 text-left">
+                        <div class="w-full h-10 rounded border border-emerald-900" style="background: #1b4332;"></div>
+                        <span class="text-[11px] text-white truncate w-full text-center">Forest Brocade</span>
                     </button>
 
-                    <button onclick="setFabric('creamGoldBrocade', 'Cream Gold Brocade', 'url(#creamGoldBrocade)')" class="group flex flex-col items-center gap-2 p-2 rounded-xl bg-slate-900 border border-atelier-border hover:border-atelier-gold transition-all">
-                        <div class="w-full h-16 rounded-lg shadow-inner flex items-center justify-center border border-amber-200" style="background: #fdfbf7;">
-                            <span class="text-xs text-amber-700 font-serif">#18</span>
-                        </div>
-                        <span class="text-xs font-medium text-atelier-text text-center">Cream Brocade</span>
+                    <button onclick="setFabric('creamGoldBrocade', 'Cream Gold Brocade', 'url(#creamGoldBrocade)')" class="flex flex-col items-center gap-1.5 p-1.5 rounded bg-slate-900 border border-atelier-border hover:border-sky-400 text-left">
+                        <div class="w-full h-10 rounded border border-slate-700" style="background: #334155;"></div>
+                        <span class="text-[11px] text-white truncate w-full text-center">Steel Brocade</span>
                     </button>
 
-                    <button onclick="setFabric('raniPinkSilk', 'Rani Pink Silk', 'url(#raniPinkSilk)')" class="group flex flex-col items-center gap-2 p-2 rounded-xl bg-slate-900 border border-atelier-border hover:border-atelier-gold transition-all">
-                        <div class="w-full h-16 rounded-lg shadow-inner flex items-center justify-center border border-pink-700" style="background: #db2777;">
-                            <span class="text-xs text-pink-100 font-serif">#14</span>
-                        </div>
-                        <span class="text-xs font-medium text-atelier-text text-center">Rani Pink Silk</span>
+                    <button onclick="setFabric('raniPinkSilk', 'Rani Pink Silk', 'url(#raniPinkSilk)')" class="flex flex-col items-center gap-1.5 p-1.5 rounded bg-slate-900 border border-atelier-border hover:border-sky-400 text-left">
+                        <div class="w-full h-10 rounded border border-pink-900" style="background: #831843;"></div>
+                        <span class="text-[11px] text-white truncate w-full text-center">Pink Silk</span>
                     </button>
 
-                    <button onclick="setFabric('royalBlueSilk', 'Royal Blue Silk', 'url(#royalBlueSilk)')" class="group flex flex-col items-center gap-2 p-2 rounded-xl bg-slate-900 border border-atelier-border hover:border-atelier-gold transition-all">
-                        <div class="w-full h-16 rounded-lg shadow-inner flex items-center justify-center border border-blue-900" style="background: #1e3a8a;">
-                            <span class="text-xs text-blue-200 font-serif">#17</span>
-                        </div>
-                        <span class="text-xs font-medium text-atelier-text text-center">Royal Blue</span>
+                    <button onclick="setFabric('royalBlueSilk', 'Royal Blue Silk', 'url(#royalBlueSilk)')" class="flex flex-col items-center gap-1.5 p-1.5 rounded bg-slate-900 border border-atelier-border hover:border-sky-400 text-left">
+                        <div class="w-full h-10 rounded border border-blue-900" style="background: #1e3a8a;"></div>
+                        <span class="text-[11px] text-white truncate w-full text-center">Blue Silk</span>
                     </button>
                 </div>
             </div>
 
             <!-- Neelam Thread Shade Card Grid -->
-            <div class="atelier-card bg-atelier-card border border-atelier-border rounded-2xl p-5 shadow-xl flex flex-col gap-4">
-                <div class="border-b border-atelier-border pb-3 flex justify-between items-center">
-                    <h2 class="font-serif text-base font-semibold text-atelier-gold">Neelam Thread Swatches</h2>
-                    <span class="text-[10px] bg-slate-900 px-2 py-0.5 rounded text-atelier-muted">Shade Card 13-18</span>
+            <div class="atelier-card bg-atelier-card border border-atelier-border rounded-lg p-3 shadow flex flex-col gap-2.5">
+                <div class="border-b border-atelier-border pb-2 flex justify-between items-center">
+                    <span class="text-xs font-semibold text-sky-400 uppercase tracking-wider">Thread Palettes</span>
+                    <span class="text-[10px] font-mono text-atelier-muted">Neelam</span>
                 </div>
 
-                <div class="grid grid-cols-4 gap-2">
-                    <div onclick="selectThread('185', '#00b4d8')" class="cursor-pointer bg-slate-900 border border-atelier-border hover:border-atelier-gold p-2 rounded-lg text-center flex flex-col items-center gap-1">
-                        <div class="w-5 h-5 rounded-full shadow" style="background: #00b4d8;"></div>
+                <div class="grid grid-cols-4 gap-1.5">
+                    <div onclick="selectThread('185', '#00b4d8')" class="cursor-pointer bg-slate-900 border border-atelier-border hover:border-sky-400 p-1.5 rounded text-center flex flex-col items-center gap-1">
+                        <div class="w-3.5 h-3.5 rounded-full" style="background: #00b4d8;"></div>
                         <span class="text-[10px] text-atelier-muted font-mono">185</span>
                     </div>
-                    <div onclick="selectThread('190', '#ffd166')" class="cursor-pointer bg-slate-900 border border-atelier-border hover:border-atelier-gold p-2 rounded-lg text-center flex flex-col items-center gap-1">
-                        <div class="w-5 h-5 rounded-full shadow" style="background: #ffd166;"></div>
+                    <div onclick="selectThread('190', '#ffd166')" class="cursor-pointer bg-slate-900 border border-atelier-border hover:border-sky-400 p-1.5 rounded text-center flex flex-col items-center gap-1">
+                        <div class="w-3.5 h-3.5 rounded-full" style="background: #ffd166;"></div>
                         <span class="text-[10px] text-atelier-muted font-mono">190</span>
                     </div>
-                    <div onclick="selectThread('195', '#ef476f')" class="cursor-pointer bg-slate-900 border border-atelier-border hover:border-atelier-gold p-2 rounded-lg text-center flex flex-col items-center gap-1">
-                        <div class="w-5 h-5 rounded-full shadow" style="background: #ef476f;"></div>
+                    <div onclick="selectThread('195', '#ef476f')" class="cursor-pointer bg-slate-900 border border-atelier-border hover:border-sky-400 p-1.5 rounded text-center flex flex-col items-center gap-1">
+                        <div class="w-3.5 h-3.5 rounded-full" style="background: #ef476f;"></div>
                         <span class="text-[10px] text-atelier-muted font-mono">195</span>
                     </div>
-                    <div onclick="selectThread('214', '#38b000')" class="cursor-pointer bg-slate-900 border border-atelier-border hover:border-atelier-gold p-2 rounded-lg text-center flex flex-col items-center gap-1">
-                        <div class="w-5 h-5 rounded-full shadow" style="background: #38b000;"></div>
+                    <div onclick="selectThread('214', '#38b000')" class="cursor-pointer bg-slate-900 border border-atelier-border hover:border-sky-400 p-1.5 rounded text-center flex flex-col items-center gap-1">
+                        <div class="w-3.5 h-3.5 rounded-full" style="background: #38b000;"></div>
                         <span class="text-[10px] text-atelier-muted font-mono">214</span>
-                    </div>
-                    <div onclick="selectThread('226', '#70e000')" class="cursor-pointer bg-slate-900 border border-atelier-border hover:border-atelier-gold p-2 rounded-lg text-center flex flex-col items-center gap-1">
-                        <div class="w-5 h-5 rounded-full shadow" style="background: #70e000;"></div>
-                        <span class="text-[10px] text-atelier-muted font-mono">226</span>
-                    </div>
-                    <div onclick="selectThread('245', '#7b2cbf')" class="cursor-pointer bg-slate-900 border border-atelier-border hover:border-atelier-gold p-2 rounded-lg text-center flex flex-col items-center gap-1">
-                        <div class="w-5 h-5 rounded-full shadow" style="background: #7b2cbf;"></div>
-                        <span class="text-[10px] text-atelier-muted font-mono">245</span>
-                    </div>
-                    <div onclick="selectThread('350', '#03045e')" class="cursor-pointer bg-slate-900 border border-atelier-border hover:border-atelier-gold p-2 rounded-lg text-center flex flex-col items-center gap-1">
-                        <div class="w-5 h-5 rounded-full shadow" style="background: #03045e;"></div>
-                        <span class="text-[10px] text-atelier-muted font-mono">350</span>
-                    </div>
-                    <div onclick="selectThread('512', '#ff9f1c')" class="cursor-pointer bg-slate-900 border border-atelier-border hover:border-atelier-gold p-2 rounded-lg text-center flex flex-col items-center gap-1">
-                        <div class="w-5 h-5 rounded-full shadow" style="background: #ff9f1c;"></div>
-                        <span class="text-[10px] text-atelier-muted font-mono">512</span>
                     </div>
                 </div>
 
-                <div id="selectedThreadInfo" class="text-xs text-atelier-muted bg-slate-900/60 p-2.5 rounded-lg border border-atelier-border text-center">
-                    Active Thread: <strong class="text-atelier-gold font-mono">#190 (Gold Lurex)</strong>
+                <div id="selectedThreadInfo" class="text-[11px] text-atelier-muted bg-slate-900/60 p-2 rounded border border-atelier-border text-center font-mono">
+                    Active Thread: <strong class="text-sky-400">#190</strong>
                 </div>
             </div>
 
@@ -424,53 +361,46 @@
 
     </main>
 
-    <!-- Tech Pack Modal Dialog -->
-    <div id="techPackModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-atelier-paper text-slate-900 rounded-2xl max-w-2xl w-full p-8 shadow-2xl flex flex-col gap-6 relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closeTechPackModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-900 text-xl font-bold no-print">✕</button>
+    <!-- Tech Pack Modal -->
+    <div id="techPackModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-white text-slate-900 rounded-lg max-w-xl w-full p-5 shadow-xl flex flex-col gap-4 relative max-h-[90vh] overflow-y-auto text-xs">
+            <button onclick="closeTechPackModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 font-bold no-print">✕</button>
             
-            <div class="border-b border-slate-300 pb-4 flex justify-between items-start">
+            <div class="border-b border-slate-200 pb-3 flex justify-between items-start">
                 <div>
-                    <h2 class="font-serif text-2xl font-bold text-slate-900">FAIRY MOON BOUTIQUE</h2>
-                    <p class="text-xs text-slate-500 uppercase tracking-widest mt-1">Official Workshop Tech Pack & Cutting Order</p>
+                    <h2 class="text-sm font-bold tracking-wide">FAIRY MOON BOUTIQUE - TECH PACK</h2>
+                    <p class="text-[10px] text-slate-500 uppercase mt-0.5">Workshop Cutting & Specification Sheet</p>
                 </div>
-                <div class="text-right">
-                    <p class="text-sm font-mono font-bold text-amber-700" id="modalOrderId">#ORD-2026-84</p>
-                    <p class="text-xs text-slate-500" id="modalDate">Date: 2026-04-18</p>
+                <div class="text-right font-mono">
+                    <p class="text-xs font-bold text-sky-700" id="modalOrderId">#ORD-2026-84</p>
+                    <p class="text-[10px] text-slate-500" id="modalDate">Date: 2026-04-18</p>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 text-sm bg-slate-100 p-4 rounded-xl border border-slate-200">
+            <div class="grid grid-cols-2 gap-2 bg-slate-50 p-2.5 rounded border border-slate-200">
                 <div><strong>Customer:</strong> <span id="modalCustName">Amina Al-Hassan</span></div>
                 <div><strong>Mobile:</strong> <span id="modalCustPhone">+91 98472 19280</span></div>
                 <div><strong>Category:</strong> <span id="modalCategory">Gown / Lehenga</span></div>
-                <div><strong>Selected Fabric:</strong> <span id="modalFabricName">Forest Green Brocade</span></div>
+                <div><strong>Fabric:</strong> <span id="modalFabricName">Forest Green Brocade</span></div>
             </div>
 
             <div>
-                <h3 class="font-semibold text-sm mb-2 uppercase text-slate-600">Measurement Specifications</h3>
-                <div class="grid grid-cols-4 gap-2 text-xs border border-slate-200 rounded-lg p-3 bg-white">
-                    <div>Bust: <strong id="modalBust">33.5"</strong></div>
-                    <div>Waist: <strong id="modalWaist">27.5"</strong></div>
-                    <div>Shoulder: <strong id="modalShoulder">14.5"</strong></div>
-                    <div>Armhole: <strong id="modalArmhole">15.2"</strong></div>
-                    <div>Sleeve: <strong id="modalSleeve">22.5"</strong></div>
-                    <div>Front Neck: <strong id="modalNeck">6.5"</strong></div>
-                    <div>Full Length: <strong id="modalLength">56.0"</strong></div>
-                    <div>Skirt Waist: <strong id="modalSkirt">28.0"</strong></div>
+                <strong class="block mb-1 text-slate-700">Parameters</strong>
+                <div class="grid grid-cols-4 gap-1.5 p-2 rounded border border-slate-200 bg-white font-mono text-[11px]">
+                    <div>Bust: <span id="modalBust">33.5"</span></div>
+                    <div>Waist: <span id="modalWaist">27.5"</span></div>
+                    <div>Shoulder: <span id="modalShoulder">14.5"</span></div>
+                    <div>Armhole: <span id="modalArmhole">15.2"</span></div>
+                    <div>Sleeve: <span id="modalSleeve">22.5"</span></div>
+                    <div>Front Neck: <span id="modalNeck">6.5"</span></div>
+                    <div>Length: <span id="modalLength">56.0"</span></div>
+                    <div>Skirt W: <span id="modalSkirt">28.0"</span></div>
                 </div>
             </div>
 
-            <div class="flex gap-4 items-center bg-amber-50 border border-amber-200 p-4 rounded-xl text-xs text-amber-900">
-                <span class="text-xl">🧵</span>
-                <div>
-                    <strong>Stitching Instructions:</strong> AI Vision Extracted Blueprint Applied. Use Neelam Thread for gold zari embroidery stitching. Ensure precise paneling and side zipper placement.
-                </div>
-            </div>
-
-            <div class="flex justify-end gap-3 pt-4 border-t border-slate-300 no-print">
-                <button onclick="closeTechPackModal()" class="px-5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-sm font-semibold">Close</button>
-                <button onclick="window.print()" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-sm font-bold shadow-lg">Print Tech Pack</button>
+            <div class="flex justify-end gap-2 pt-3 border-t border-slate-200 no-print">
+                <button onclick="closeTechPackModal()" class="px-3 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded font-medium">Close</button>
+                <button onclick="window.print()" class="px-3 py-1 bg-slate-900 hover:bg-slate-800 text-white rounded font-bold">Print</button>
             </div>
         </div>
     </div>
@@ -481,10 +411,29 @@
         let activeFabricFill = 'url(#forestGreenBrocade)';
         let activeFabricTitle = 'Forest Green Brocade';
 
+        window.onload = function() {
+            setupMeasurementListeners();
+            updateGarment();
+        };
+
+        function setupMeasurementListeners() {
+            document.querySelectorAll('.ledger-input').forEach(input => {
+                input.addEventListener('input', () => { updateGarment(); });
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        let val = parseFloat(input.value) || 0;
+                        const step = e.shiftKey ? 1.0 : 0.5;
+                        val = e.key === 'ArrowUp' ? val + step : val - step;
+                        input.value = val.toFixed(1);
+                        updateGarment();
+                    }
+                });
+            });
+        }
+
         function zoomSvg(factor) {
-            currentZoom *= factor;
-            if (currentZoom < 0.7) currentZoom = 0.7;
-            if (currentZoom > 2.0) currentZoom = 2.0;
+            currentZoom = Math.min(2.0, Math.max(0.7, currentZoom * factor));
             document.getElementById('garmentSvg').style.transform = `scale(${currentZoom})`;
         }
 
@@ -503,13 +452,33 @@
         }
 
         function selectThread(code, colorHex) {
-            document.getElementById('selectedThreadInfo').innerHTML = `Active Thread: <strong class="text-atelier-gold font-mono">#${code}</strong>`;
+            document.getElementById('selectedThreadInfo').innerHTML = `Active Thread: <strong class="text-sky-400 font-mono">#${code}</strong>`;
         }
 
         function updateGarment() {
             const category = document.getElementById('itemCategory').value;
             const neckline = document.getElementById('neckline').value;
             const sleeves = document.getElementById('sleeves').value;
+
+            const bustVal = parseFloat(document.getElementById('mBust').value) || 34;
+            const waistVal = parseFloat(document.getElementById('mWaist').value) || 28;
+            const lengthVal = parseFloat(document.getElementById('mLength').value) || 56;
+            const sleeveVal = parseFloat(document.getElementById('mSleeve').value) || 22;
+            const shoulderVal = parseFloat(document.getElementById('mShoulder').value) || 14;
+
+            const halfBust = bustVal * 2.2;
+            const halfWaist = waistVal * 2.1;
+            const shoulderWidth = shoulderVal * 3.2;
+            
+            const bottomY = Math.min(590, Math.max(380, 100 + (lengthVal * 8.5)));
+            const skirtHemWidth = halfWaist * 3.2;
+
+            const leftBodiceX = 250 - halfBust;
+            const rightBodiceX = 250 + halfBust;
+            const leftWaistX = 250 - halfWaist;
+            const rightWaistX = 250 + halfWaist;
+            const leftShoulderX = 250 - shoulderWidth;
+            const rightShoulderX = 250 + shoulderWidth;
 
             const bodice = document.getElementById('bodicePath');
             const skirt = document.getElementById('skirtPath');
@@ -520,112 +489,71 @@
 
             if (category === 'blouse') {
                 badge.innerText = 'Saree Blouse Custom Cut';
-                skirt.setAttribute('d', 'M190 320 L310 320 L325 390 L175 390 Z');
+                bodice.setAttribute('d', `M${leftWaistX} 100 Q250 80 ${rightWaistX} 100 L${rightBodiceX} 180 L${rightWaistX} 320 L${leftWaistX} 320 L${leftBodiceX} 180 Z`);
+                skirt.setAttribute('d', `M${leftWaistX} 320 L${rightWaistX} 320 L${250 + halfWaist * 1.4} 410 L${250 - halfWaist * 1.4} 410 Z`);
             } else if (category === 'kurti') {
                 badge.innerText = 'Straight Kurti Tunic';
-                skirt.setAttribute('d', 'M190 320 L310 320 L315 500 L185 500 Z');
+                bodice.setAttribute('d', `M${leftShoulderX} 100 Q250 85 ${rightShoulderX} 100 L${rightBodiceX} 170 L${rightWaistX} 320 L${leftWaistX} 320 L${leftBodiceX} 170 Z`);
+                skirt.setAttribute('d', `M${leftWaistX} 320 L${rightWaistX} 320 L${rightWaistX + 10} ${bottomY} L${leftWaistX - 10} ${bottomY} Z`);
             } else if (category === 'cordset') {
                 badge.innerText = 'Tailored Trouser Cord Set';
-                skirt.setAttribute('d', 'M190 320 L310 320 L320 580 L255 580 L250 420 L245 580 L180 580 Z');
+                bodice.setAttribute('d', `M${leftShoulderX} 100 Q250 85 ${rightShoulderX} 100 L${rightBodiceX} 170 L${rightWaistX} 320 L${leftWaistX} 320 L${leftBodiceX} 170 Z`);
+                skirt.setAttribute('d', `M${leftWaistX} 320 L${rightWaistX} 320 L${rightWaistX + 15} ${bottomY} L260 ${bottomY} L255 420 L250 420 L245 420 L240 ${bottomY} L${leftWaistX - 15} ${bottomY} Z`);
             } else {
                 badge.innerText = 'Chantilly Corset Gown';
-                skirt.setAttribute('d', 'M190 320 L310 320 L360 590 L140 590 Z');
+                bodice.setAttribute('d', `M${leftShoulderX} 100 Q250 85 ${rightShoulderX} 100 L${rightBodiceX} 170 L${rightWaistX} 320 L${leftWaistX} 320 L${leftBodiceX} 170 Z`);
+                skirt.setAttribute('d', `M${leftWaistX} 320 L${rightWaistX} 320 L${250 + skirtHemWidth} ${bottomY} L${250 - skirtHemWidth} ${bottomY} Z`);
             }
 
             if (neckline === 'v-neck') {
-                neck.setAttribute('d', 'M190 100 L250 190 L310 100 Z');
+                neck.setAttribute('d', `M${leftShoulderX} 100 L250 ${120 + (lengthVal-6)*4} L${rightShoulderX} 100 Z`);
             } else if (neckline === 'boat') {
-                neck.setAttribute('d', 'M170 100 Q250 115 330 100 Z');
+                neck.setAttribute('d', `M${leftShoulderX + 10} 100 Q250 115 ${rightShoulderX - 10} 100 Z`);
             } else if (neckline === 'round') {
-                neck.setAttribute('d', 'M190 100 Q250 140 310 100 Z');
+                neck.setAttribute('d', `M${leftShoulderX + 15} 100 Q250 145 ${rightShoulderX - 15} 100 Z`);
             } else {
-                neck.setAttribute('d', 'M190 100 Q250 155 310 100 Z');
+                neck.setAttribute('d', `M${leftShoulderX + 10} 100 Q250 155 ${rightShoulderX - 10} 100 Z`);
             }
 
+            const sleeveLengthPx = sleeveVal * 12;
             if (sleeves === 'sleeveless') {
                 leftSlv.setAttribute('d', '');
                 rightSlv.setAttribute('d', '');
             } else if (sleeves === 'puff') {
-                leftSlv.setAttribute('d', 'M165 170 C100 170 95 250 135 275 L190 195 Z');
-                rightSlv.setAttribute('d', 'M335 170 C400 170 405 250 365 275 L310 195 Z');
+                leftSlv.setAttribute('d', `M${leftBodiceX} 170 C${leftBodiceX - 70} 170 ${leftBodiceX - 75} ${200 + sleeveLengthPx * 0.5} ${leftBodiceX - 25} ${170 + sleeveLengthPx * 0.7} L${leftBodiceX} 195 Z`);
+                rightSlv.setAttribute('d', `M${rightBodiceX} 170 C${rightBodiceX + 70} 170 ${rightBodiceX + 75} ${200 + sleeveLengthPx * 0.5} ${rightBodiceX + 25} ${170 + sleeveLengthPx * 0.7} L${rightBodiceX} 195 Z`);
             } else if (sleeves === 'full') {
-                leftSlv.setAttribute('d', 'M165 170 L95 440 L125 455 L190 195 Z');
-                rightSlv.setAttribute('d', 'M335 170 L405 440 L375 455 L310 195 Z');
+                leftSlv.setAttribute('d', `M${leftBodiceX} 170 L${leftBodiceX - 65 - sleeveLengthPx} ${170 + sleeveLengthPx * 1.5} L${leftBodiceX - 45 - sleeveLengthPx} ${185 + sleeveLengthPx * 1.5} L${leftBodiceX} 195 Z`);
+                rightSlv.setAttribute('d', `M${rightBodiceX} 170 L${rightBodiceX + 65 + sleeveLengthPx} ${170 + sleeveLengthPx * 1.5} L${rightBodiceX + 45 + sleeveLengthPx} ${185 + sleeveLengthPx * 1.5} L${rightBodiceX} 195 Z`);
             } else {
-                leftSlv.setAttribute('d', 'M165 170 L115 250 L135 275 L190 195 Z');
-                rightSlv.setAttribute('d', 'M335 170 L385 250 L365 275 L310 195 Z');
+                leftSlv.setAttribute('d', `M${leftBodiceX} 170 L${leftBodiceX - 50} ${170 + sleeveLengthPx * 0.8} L${leftBodiceX - 35} ${185 + sleeveLengthPx * 0.8} L${leftBodiceX} 195 Z`);
+                rightSlv.setAttribute('d', `M${rightBodiceX} 170 L${rightBodiceX + 50} ${170 + sleeveLengthPx * 0.8} L${rightBodiceX + 35} ${185 + sleeveLengthPx * 0.8} L${rightBodiceX} 195 Z`);
             }
+
+            document.getElementById('boneCenter').setAttribute('d', `M250 100 L250 ${bottomY}`);
+            document.getElementById('boneLeft').setAttribute('d', `M${leftWaistX + 10} ${bottomY} L${leftBodiceX + 15} 170`);
+            document.getElementById('boneRight').setAttribute('d', `M${rightWaistX - 10} ${bottomY} L${rightBodiceX - 15} 170`);
+
+            document.getElementById('dimLine').setAttribute('y2', bottomY);
+            document.getElementById('dimBottomTick').setAttribute('y1', bottomY);
+            document.getElementById('dimBottomTick').setAttribute('y2', bottomY);
+            document.getElementById('dimLengthText').setAttribute('y', (100 + bottomY) / 2);
+            document.getElementById('dimLengthText').textContent = lengthVal.toFixed(1) + '"';
+
+            const fabricMeters = (lengthVal * waistVal / 320).toFixed(1);
+            const stitchHours = (lengthVal / 10 + (category === 'gown' ? 3.5 : 2.0)).toFixed(1);
+            document.getElementById('calcFabricReq').innerText = fabricMeters + 'm';
+            document.getElementById('calcStitchTime').innerText = stitchHours + 'h';
         }
 
-        // --- AI Image Upload & Vision Feature Simulation ---
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const thumb = document.getElementById('uploadPreviewThumb');
-                thumb.src = e.target.result;
-
-                // Show AI Scanning overlay
-                const overlay = document.getElementById('scanningOverlay');
-                overlay.classList.remove('hidden');
-                overlay.classList.add('flex');
-                document.getElementById('aiConfidence').innerText = 'Analyzing pixels...';
-                document.getElementById('transcript').innerText = `"Analyzing uploaded dress image..."`;
-
-                // Simulate computer vision feature extraction after 2.2 seconds
-                setTimeout(() => {
-                    overlay.classList.remove('flex');
-                    overlay.classList.add('hidden');
-
-                    // Randomize or smartly extract preset styles for demonstration
-                    const extractedOptions = [
-                        { category: 'gown', neckline: 'sweetheart', sleeves: 'puff', fabric: 'forestGreenBrocade', title: 'Forest Green Brocade', bust: '34.0', waist: '28.0', length: '58.0' },
-                        { category: 'blouse', neckline: 'v-neck', sleeves: 'elbow', fabric: 'raniPinkSilk', title: 'Rani Pink Silk', bust: '33.0', waist: '26.5', length: '16.0' },
-                        { category: 'cordset', neckline: 'boat', sleeves: 'full', fabric: 'royalBlueSilk', title: 'Royal Blue Silk', bust: '35.0', waist: '29.0', length: '40.0' }
-                    ];
-
-                    const extracted = extractedOptions[Math.floor(Math.random() * extractedOptions.length)];
-
-                    // Apply to UI fields
-                    document.getElementById('itemCategory').value = extracted.category;
-                    document.getElementById('neckline').value = extracted.neckline;
-                    document.getElementById('sleeves').value = extracted.sleeves;
-                    
-                    document.getElementById('mBust').value = extracted.bust;
-                    document.getElementById('mWaist').value = extracted.waist;
-                    document.getElementById('mLength').value = extracted.length;
-
-                    // Apply Fabric
-                    if (extracted.fabric === 'raniPinkSilk') {
-                        setFabric('raniPinkSilk', 'Rani Pink Silk', 'url(#raniPinkSilk)');
-                    } else if (extracted.fabric === 'royalBlueSilk') {
-                        setFabric('royalBlueSilk', 'Royal Blue Silk', 'url(#royalBlueSilk)');
-                    } else {
-                        setFabric('forestGreenBrocade', 'Forest Green Brocade', 'url(#forestGreenBrocade)');
-                    }
-
-                    updateGarment();
-
-                    document.getElementById('aiConfidence').innerText = 'Vision Extracted (99.4%)';
-                    document.getElementById('transcript').innerText = `"Extracted: ${extracted.category} with ${extracted.neckline} neckline & ${extracted.sleeves} sleeves."`;
-                }, 2200);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Voice Recognition Integration
         let recognition = null;
         let isListening = false;
 
         function toggleVoiceRecognition() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) {
-                alert("Speech recognition is not supported in this browser. Please use Google Chrome.");
                 return;
             }
-
             const btn = document.getElementById('voiceBtn');
             const status = document.getElementById('liveStatus');
 
@@ -637,12 +565,10 @@
 
                 recognition.onstart = () => {
                     isListening = true;
-                    btn.classList.add('bg-red-600');
-                    btn.innerHTML = "🔴 Listening Live...";
-                    status.innerHTML = '<span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span> Voice Active';
-                    status.className = "px-3 py-1.5 rounded-full bg-slate-800 border border-red-700 text-xs text-red-400 flex items-center gap-2 shadow-inner text-xs";
+                    btn.className = "px-3 py-1 bg-red-600 text-white rounded text-xs font-medium";
+                    btn.innerHTML = "🔴 Listening";
+                    status.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span> Active';
                 };
-
                 recognition.onresult = (event) => {
                     let transcriptText = '';
                     for (let i = event.resultIndex; i < event.results.length; ++i) {
@@ -652,61 +578,28 @@
                     document.getElementById('transcript').innerText = `"${spoken}"`;
                     parseVoiceCommand(spoken);
                 };
-
-                recognition.onerror = (e) => console.error("Speech recognition error:", e);
                 recognition.onend = () => { if (isListening) recognition.start(); };
-
                 recognition.start();
             } else {
                 isListening = false;
                 recognition.stop();
-                btn.classList.remove('bg-red-600');
-                btn.innerHTML = "🎤 Voice Stitched";
-                status.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Standby for Voice';
-                status.className = "px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-xs text-emerald-400 flex items-center gap-2 shadow-inner text-xs";
-                document.getElementById('transcript').innerText = '"Upload a photo or speak commands..."';
+                btn.className = "px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded text-xs font-medium";
+                btn.innerHTML = "🎤 Voice";
+                status.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Voice Ready';
+                document.getElementById('transcript').innerText = '"Say specs like waist 28..."';
             }
         }
 
         function parseVoiceCommand(text) {
-            if (text.includes('v neck') || text.includes('v-neck')) {
-                document.getElementById('neckline').value = 'v-neck';
-            } else if (text.includes('sweetheart')) {
-                document.getElementById('neckline').value = 'sweetheart';
-            } else if (text.includes('boat')) {
-                document.getElementById('neckline').value = 'boat';
-            } else if (text.includes('round')) {
-                document.getElementById('neckline').value = 'round';
-            }
-
-            if (text.includes('puff')) {
-                document.getElementById('sleeves').value = 'puff';
-            } else if (text.includes('sleeveless')) {
-                document.getElementById('sleeves').value = 'sleeveless';
-            } else if (text.includes('full sleeve') || text.includes('long sleeve')) {
-                document.getElementById('sleeves').value = 'full';
-            } else if (text.includes('elbow')) {
-                document.getElementById('sleeves').value = 'elbow';
-            }
-
-            if (text.includes('blouse')) {
-                document.getElementById('itemCategory').value = 'blouse';
-            } else if (text.includes('kurti')) {
-                document.getElementById('itemCategory').value = 'kurti';
-            } else if (text.includes('gown') || text.includes('lehenga')) {
-                document.getElementById('itemCategory').value = 'gown';
-            }
-
-            if (text.includes('pink')) {
-                setFabric('raniPinkSilk', 'Rani Pink Silk', 'url(#raniPinkSilk)');
-            } else if (text.includes('blue')) {
-                setFabric('royalBlueSilk', 'Royal Blue Silk', 'url(#royalBlueSilk)');
-            } else if (text.includes('cream') || text.includes('gold')) {
-                setFabric('creamGoldBrocade', 'Cream Gold Brocade', 'url(#creamGoldBrocade)');
-            } else if (text.includes('green')) {
-                setFabric('forestGreenBrocade', 'Forest Green Brocade', 'url(#forestGreenBrocade)');
-            }
-
+            if (text.includes('v neck') || text.includes('v-neck')) document.getElementById('neckline').value = 'v-neck';
+            if (text.includes('sweetheart')) document.getElementById('neckline').value = 'sweetheart';
+            if (text.includes('boat')) document.getElementById('neckline').value = 'boat';
+            if (text.includes('round')) document.getElementById('neckline').value = 'round';
+            if (text.includes('puff')) document.getElementById('sleeves').value = 'puff';
+            if (text.includes('sleeveless')) document.getElementById('sleeves').value = 'sleeveless';
+            if (text.includes('blouse')) document.getElementById('itemCategory').value = 'blouse';
+            if (text.includes('kurti')) document.getElementById('itemCategory').value = 'kurti';
+            if (text.includes('gown')) document.getElementById('itemCategory').value = 'gown';
             updateGarment();
         }
 
@@ -717,7 +610,6 @@
             document.getElementById('modalCustPhone').innerText = document.getElementById('custPhone').value;
             document.getElementById('modalCategory').innerText = document.getElementById('itemCategory').options[document.getElementById('itemCategory').selectedIndex].text;
             document.getElementById('modalFabricName').innerText = activeFabricTitle;
-            
             document.getElementById('modalBust').innerText = document.getElementById('mBust').value + '"';
             document.getElementById('modalWaist').innerText = document.getElementById('mWaist').value + '"';
             document.getElementById('modalShoulder').innerText = document.getElementById('mShoulder').value + '"';
@@ -726,7 +618,6 @@
             document.getElementById('modalNeck').innerText = document.getElementById('mNeck').value + '"';
             document.getElementById('modalLength').innerText = document.getElementById('mLength').value + '"';
             document.getElementById('modalSkirt').innerText = document.getElementById('mSkirt').value + '"';
-
             document.getElementById('techPackModal').classList.remove('hidden');
         }
 
