@@ -1,0 +1,109 @@
+  :root {
+   color-scheme: light;
+   font: 14px/1.4 Arial, Helvetica, sans-serif;
+   color: #202a35;
+   background: #f1f3f5;
+  }
+
+  * {
+   box-sizing: border-box;
+  }
+
+  body {
+   margin: 0;
+   padding: 12px;
+  }
+
+  main {
+   width: 100%;
+   min-height: calc(100vh - 24px);
+   margin: 0 auto;
+   padding: 16px;
+   background: #fff;
+   border: 1px solid #d7dde3;
+  }
+
+  h1 {
+   margin: 0 0 12px;
+   font-size: 1.35rem;
+   font-weight: 600;
+  }
+
+  h2 {
+   margin: 16px 0 8px;
+   padding-bottom: 5px;
+   border-bottom: 1px solid #d7dde3;
+   font-size: 1rem;
+   font-weight: 600;
+  }
+
+  .grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+   gap: 8px 10px;
+  }
+
+  label {
+   display: grid;
+   gap: 3px;
+   font-size: .9rem;
+  }
+
+  input {
+   width: 100%;
+   min-height: 36px;
+   padding: 6px 8px;
+   border: 1px solid #b8c2cc;
+   border-radius: 3px;
+   font: inherit;
+  }
+
+  input:focus {
+   outline: 2px solid #356b9a;
+   outline-offset: 1px;
+  }
+
+  .actions {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   gap: 8px;
+   margin-top: 16px;
+  }
+
+  button,
+  .file-button {
+   padding: 7px 11px;
+   border: 1px solid #315f86;
+   border-radius: 3px;
+   background: #315f86;
+   color: #fff;
+   font: inherit;
+   cursor: pointer;
+  }
+
+  .file-button input {
+   position: absolute;
+   width: 1px;
+   height: 1px;
+   overflow: hidden;
+   clip: rect(0, 0, 0, 0);
+  }
+
+  #status {
+   min-height: 1.4em;
+   margin: 0;
+   color: #354454;
+   font-size: .9rem;
+  }
+
+  @media (max-width: 480px) {
+   body {
+    padding: 6px;
+   }
+
+   main {
+    min-height: calc(100vh - 12px);
+    padding: 10px;
+   }
+  }

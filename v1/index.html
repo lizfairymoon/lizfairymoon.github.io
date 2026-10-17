@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>Fairy Moon — Order Form</title>
+ <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+ <main>
+  <h1>Fairy Moon Order Form</h1>
+  <form id="order-form">
+   <h2>Order details</h2>
+   <div class="grid">
+    <label>Item category<input name="itemCategory" autocomplete="off"></label>
+    <label>Customer name<input name="customerName" autocomplete="name"></label>
+    <label>Mobile number<input name="mobileNumber" type="tel" autocomplete="tel"></label>
+    <label>Date of order<input name="orderDate" type="date"></label>
+    <label>Due date<input name="dueDate" type="date"></label>
+    <label>Advance payment<input name="advancePayment" inputmode="decimal"></label>
+    <label>Payment date<input name="paymentDate" type="date"></label>
+   </div>
+
+   <h2>Measurements</h2>
+   <div class="grid">
+    <label>Chest<input name="chest"></label>
+    <label>Bust<input name="bust"></label>
+    <label>Waist<input name="waist"></label>
+    <label>Shoulder<input name="shoulder"></label>
+    <label>Armhole<input name="armhole"></label>
+    <label>Sleeve length<input name="sleeveLength"></label>
+    <label>Sleeve around<input name="sleeveAround"></label>
+    <label>Yoke length<input name="yokeLength"></label>
+    <label>Yoke around<input name="yokeAround"></label>
+    <label>Neck front<input name="neckFront"></label>
+    <label>Transparency<input name="transparency"></label>
+    <label>Neck back<input name="neckBack"></label>
+    <label>Chest width — front<input name="chestWidthFront"></label>
+    <label>Chest width — back<input name="chestWidthBack"></label>
+    <label>Bust point<input name="bustPoint"></label>
+    <label>Bust distance<input name="bustDistance"></label>
+    <label>Full length<input name="fullLength"></label>
+    <label>Seat around<input name="seatAround"></label>
+    <label>Seat length<input name="seatLength"></label>
+    <label>Knee length<input name="kneeLength"></label>
+    <label>Knee around<input name="kneeAround"></label>
+    <label>Skirt waist<input name="skirtWaist"></label>
+    <label>Skirt length<input name="skirtLength"></label>
+    <label>Top length<input name="topLength"></label>
+    <label>Blouse length<input name="blouseLength"></label>
+   </div>
+
+   <h2>Pant measurements</h2>
+   <div class="grid">
+    <label>Waist<input name="pantWaist"></label>
+    <label>Length<input name="pantLength"></label>
+    <label>Seat<input name="pantSeat"></label>
+    <label>Thigh<input name="thigh"></label>
+    <label>Knee<input name="pantKnee"></label>
+    <label>Calf<input name="calf"></label>
+    <label>Ankle<input name="ankle"></label>
+   </div>
+
+   <div class="actions">
+    <button type="button" id="export">Export JSON</button>
+    <label class="file-button">Import JSON<input id="import" type="file" accept="application/json,.json"></label>
+    <p id="status" role="status" aria-live="polite"></p>
+   </div>
+  </form>
+ </main>
+</body>
+
+</html>
